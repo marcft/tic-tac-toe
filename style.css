@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --DIALOG-WIDTH: 500px;
+}
+
+html {
+    position: relative;
+    min-height: 100vh;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: whitesmoke;
+    margin-bottom: 100px;
+}
+
+/* HEADER */
+
+header {
+    padding-top: 30px;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    margin: 0 auto;
+    padding: 20px 0;
+    width: 550px;
+    text-align: center;
+    font-size: 4.5rem;
+    background-color: rgb(196, 196, 196);
+    color: #333;
+    border-radius: 20px;
+}
+
+/* MAIN */
+
+main p {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+main .gameboard {
+    width: 450px;
+    height: 450px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.gameboard .gamecell {
+    border: 1px solid black;
+    font-size: 5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main button {
+    display: block;
+    font: inherit;
+    margin: 0 auto;
+    padding: 20px 50px;
+}
+
+/* DIALOG */
+
+dialog {
+    position: fixed;
+    top: 300px;
+    left: calc(50% - (var(--DIALOG-WIDTH) / 2));
+    border: none;
+    border-radius: 20px;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog h1 {
+    padding: 70px 0;
+    width: var(--DIALOG-WIDTH);
+    text-align: center;
+    font-size: 2.3rem;
+    font-weight: 700;
+}
+
+/* FOOTER */
+
+footer {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+    color: black;
+    font-size: 1.2rem;
+}
