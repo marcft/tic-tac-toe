@@ -9,23 +9,44 @@
 </head>
 <body>
     <header>
-        <h1>Tic-Tac-Toe</h1>
+        <h1>Tic Tac Toe</h1>
     </header>
+
     <main>
-        <p>Player X's Turn</p>
+        <p>Turn</p>
         <div class="gameboard">
-            <div class="gamecell"></div>
-            <div class="gamecell"></div>
-            <div class="gamecell"></div>
-            <div class="gamecell"></div>
-            <div class="gamecell"></div>
-            <div class="gamecell"></div>
-            <div class="gamecell"></div>
-            <div class="gamecell"></div>
-            <div class="gamecell"></div>
+            <div class="gamecell" data-position="0"></div>
+            <div class="gamecell" data-position="1"></div>
+            <div class="gamecell" data-position="2"></div>
+            <div class="gamecell" data-position="3"></div>
+            <div class="gamecell" data-position="4"></div>
+            <div class="gamecell" data-position="5"></div>
+            <div class="gamecell" data-position="6"></div>
+            <div class="gamecell" data-position="7"></div>
+            <div class="gamecell" data-position="8"></div>
         </div>
         <button type="button">Reset</button>
     </main>
+
+    <dialog class="names-dialog">
+        <form>
+            <p class="title">Let's start the game!</p>
+            <p  class="player-name">
+                <label for="name1">Player 1's Name:</label>
+                <input type="text" name="name1" id="name1" maxlength="20" required>
+            </p>
+            <p  class="player-name">
+                <label for="name2">Player 2's Name:</label>
+                <input type="text" name="name2" id="name2" maxlength="20" required>
+            </p>
+            <button>Confirm</button>
+        </form>
+    </dialog>
+
+    <dialog class="result-dialog">
+        <h1>Player X Wins!</h1>
+    </dialog>
+
     <footer>
         <p>Made by Marc Frances</p>
     </footer>
