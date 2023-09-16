@@ -7,7 +7,10 @@
 }
 
 :root {
-    --DIALOG-WIDTH: 500px;
+    --RESULT-DIALOG-WIDTH: 500px;
+    --NAMES-DIALOG-WIDTH: 700px;
+    --LIGHT-COLOR: rgb(216, 200, 173);
+    --EXTRA-LIGHT-COLOR: rgb(230, 223, 210);
 }
 
 html {
@@ -17,7 +20,7 @@ html {
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: whitesmoke;
+    background-color: rgb(211, 162, 88);
     margin-bottom: 100px;
 }
 
@@ -34,32 +37,40 @@ header h1 {
     width: 550px;
     text-align: center;
     font-size: 4.5rem;
-    background-color: rgb(196, 196, 196);
+    background-color: var(--LIGHT-COLOR);
     color: #333;
     border-radius: 20px;
+}
+
+header h1:hover {
+    background-color: var(--EXTRA-LIGHT-COLOR);
 }
 
 /* MAIN */
 
 main p {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align: center;
     font-size: 2.5rem;
 }
 
 main .gameboard {
-    width: 450px;
-    height: 450px;
+    width: 470px;
+    height: 470px;
     margin: 0 auto;
     margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: var(--LIGHT-COLOR);
 
     display: grid;
+    gap: 3px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
 }
 
 .gameboard .gamecell {
-    border: 1px solid black;
+    border: 2px solid black;
     font-size: 5rem;
 
     display: flex;
@@ -67,19 +78,30 @@ main .gameboard {
     justify-content: center;
 }
 
+.gameboard .gamecell:hover {
+    background-color: var(--EXTRA-LIGHT-COLOR);
+}
+
 main button {
     display: block;
     font: inherit;
+    font-size: 1.2rem;
+    font-weight: 500;
     margin: 0 auto;
-    padding: 20px 50px;
+    padding: 20px 70px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--LIGHT-COLOR);
+}
+
+main button:hover {
+    background-color: var(--EXTRA-LIGHT-COLOR);
 }
 
 /* DIALOG */
 
 dialog {
     position: fixed;
-    top: 300px;
-    left: calc(50% - (var(--DIALOG-WIDTH) / 2));
     border: none;
     border-radius: 20px;
 }
@@ -88,12 +110,79 @@ dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-dialog h1 {
+/* --- RESULT DIALOG */
+
+.result-dialog {
+    top: 300px;
+    left: calc(50% - (var(--RESULT-DIALOG-WIDTH) / 2));
+}
+
+.result-dialog h1 {
     padding: 70px 0;
-    width: var(--DIALOG-WIDTH);
+    width: var(--RESULT-DIALOG-WIDTH);
     text-align: center;
     font-size: 2.3rem;
     font-weight: 700;
+}
+
+/* --- NAMES DIALOG */
+
+.names-dialog {
+    top: 200px;
+    left: calc(50% - (var(--NAMES-DIALOG-WIDTH) / 2));
+}
+
+.names-dialog form {
+    padding: 50px 0 70px 0;
+    width: var(--NAMES-DIALOG-WIDTH);
+
+    display: grid;
+    row-gap: 50px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    justify-items: center;
+}
+
+.names-dialog p.title {
+    grid-column: 1 / -1;
+
+   font-size: 2.5rem;
+   font-weight: 700;
+}
+
+.names-dialog p.player-name {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.names-dialog input {
+    width: 230px;
+    padding: 5px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.names-dialog button {
+    grid-column: 1 / -1;
+
+    margin-top: 25px;
+    padding: 25px 70px;
+    background-color: rgb(116, 233, 116);
+    border: 0.5px solid black;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.names-dialog button:hover {
+    background-color: rgb(146, 255, 146);
 }
 
 /* FOOTER */
