@@ -25,6 +25,7 @@ namesDialogButton.addEventListener('click', (event) => {
     } 
 });
 
+//Game Initialization after player names being chosen
 function gameInitialization(player1, player2) {
     const gameBoard = (() => {
         let gameBoardArray = [null, null, null, null, null, null, null, null, null];
@@ -95,7 +96,8 @@ function gameInitialization(player1, player2) {
                 tie: false,
                 winnerSymbol: '',
             };
-    
+            
+            //Checks if there is a winner
             for (let i = 0; i < gameCombinations.length; i++) {
                 const localRes = areItemsOfArrayEqual(gameCombinations[i]);
                 if (localRes.areItemsEqual) {
@@ -105,7 +107,7 @@ function gameInitialization(player1, player2) {
                 };
             }
     
-            //Comprobar empate si no hay null
+            //Checks tie
             if (!gameBoardArray.includes(null)) {
                 result.tie = true;
                 return result;
@@ -156,7 +158,7 @@ function gameInitialization(player1, player2) {
         let currentPlayer = firstPlayer;
         let gameEnded = false;
     
-        //Initialization
+        //Initialization of PlayerTurnTitle
         displayController.changePlayerTurnTitle(`${currentPlayer.getName()}'s Turn`);
     
     
