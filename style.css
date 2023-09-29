@@ -195,6 +195,9 @@ dialog::backdrop {
 }
 
 @media screen and (max-width: 600px) {
+    .names-dialog {
+        top: 100px;
+    }
     .names-dialog form {
         row-gap: 40px;
         grid-template-columns: 1fr;
