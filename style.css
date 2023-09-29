@@ -7,8 +7,17 @@
 }
 
 :root {
-    --RESULT-DIALOG-WIDTH: 500px;
-    --NAMES-DIALOG-WIDTH: 700px;
+    --RESULT-DIALOG-WIDTH: min(85vw, 500px);
+    --NAMES-DIALOG-WIDTH: min(85vw, 700px);
+    --HEADER-WIDTH: min(90vw, 550px);
+    --GAMEBOARD-SIDE: min(90vw, 470px);
+
+    --TITLE-FS: clamp(3rem, 13vw, 4.5rem);
+    --TURN-MSG-FS: clamp(1.5rem, 10vw, 2.5rem);
+    --PLAYER-SYMBOL-FS: clamp(2rem, 15vw, 5rem);
+    --FOOTER-FS: clamp(1rem, 5vw, 1.2rem);
+    --RESULT-DIALOG-FS: clamp(1.2rem, 8vw, 2.3rem);
+
     --LIGHT-COLOR: rgb(216, 200, 173);
     --EXTRA-LIGHT-COLOR: rgb(230, 223, 210);
 }
@@ -34,9 +43,9 @@ header {
 header h1 {
     margin: 0 auto;
     padding: 20px 0;
-    width: 550px;
+    width: var(--HEADER-WIDTH);
     text-align: center;
-    font-size: 4.5rem;
+    font-size: var(--TITLE-FS);
     background-color: var(--LIGHT-COLOR);
     color: #333;
     border-radius: 20px;
@@ -51,12 +60,12 @@ header h1:hover {
 main p {
     margin-bottom: 20px;
     text-align: center;
-    font-size: 2.5rem;
+    font-size: var(--TURN-MSG-FS);
 }
 
 main .gameboard {
-    width: 470px;
-    height: 470px;
+    width: var(--GAMEBOARD-SIDE);
+    height: var(--GAMEBOARD-SIDE);
     margin: 0 auto;
     margin-bottom: 30px;
     padding: 20px;
@@ -71,7 +80,7 @@ main .gameboard {
 
 .gameboard .gamecell {
     border: 2px solid black;
-    font-size: 5rem;
+    font-size: var(--PLAYER-SYMBOL-FS);
 
     display: flex;
     align-items: center;
@@ -118,10 +127,10 @@ dialog::backdrop {
 }
 
 .result-dialog h1 {
-    padding: 70px 0;
+    padding: 70px 10px;
     width: var(--RESULT-DIALOG-WIDTH);
     text-align: center;
-    font-size: 2.3rem;
+    font-size: var(--RESULT-DIALOG-FS);
     font-weight: 700;
 }
 
@@ -185,6 +194,20 @@ dialog::backdrop {
     background-color: rgb(146, 255, 146);
 }
 
+@media screen and (max-width: 600px) {
+    .names-dialog form {
+        row-gap: 40px;
+        grid-template-columns: 1fr;
+    }
+    .names-dialog p.title {
+        font-size: clamp(1.5rem, 8vw, 2.2rem);
+    }
+    .names-dialog button {
+        padding-inline: 60px;
+        font-size: 1.2rem;
+    }
+}
+
 /* FOOTER */
 
 footer {
@@ -193,5 +216,5 @@ footer {
     width: 100%;
     text-align: center;
     color: black;
-    font-size: 1.2rem;
+    font-size: var(--FOOTER-FS);
 }
