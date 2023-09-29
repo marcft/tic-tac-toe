@@ -19,5 +19,5 @@ Welcome to the Tic-Tac-Toe game! This is a simple two-player game where you can 
 
 ## Demo
 
-You can check out a live demo of this Tic-Tac-Toe game [here](#) (TODO: Add link).
+You can check out a live demo of this Tic-Tac-Toe game [here](https://marcft.github.io/tic-tac-toe/).
 
