@@ -31,6 +31,7 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: rgb(211, 162, 88);
     margin-bottom: 100px;
+    user-select: none;
 }
 
 /* HEADER */
@@ -81,6 +82,7 @@ main .gameboard {
 .gameboard .gamecell {
     border: 2px solid black;
     font-size: var(--PLAYER-SYMBOL-FS);
+    cursor: pointer;
 
     display: flex;
     align-items: center;
@@ -101,6 +103,7 @@ main button {
     border: none;
     border-radius: 10px;
     background-color: var(--LIGHT-COLOR);
+    cursor: pointer;
 }
 
 main button:hover {
@@ -113,6 +116,7 @@ dialog {
     position: fixed;
     border: none;
     border-radius: 20px;
+    user-select: none;
 }
 
 dialog::backdrop {
@@ -188,6 +192,7 @@ dialog::backdrop {
     font: inherit;
     font-size: 1.4rem;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .names-dialog button:hover {
@@ -220,4 +225,5 @@ footer {
     text-align: center;
     color: black;
     font-size: var(--FOOTER-FS);
+    user-select: text;
 }
