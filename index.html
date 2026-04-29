@@ -1,20 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic Tac Toe</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="game.js" defer></script>
-</head>
-<body>
-    <header>
-        <h1>Tic Tac Toe</h1>
-    </header>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-content">
+          <h1>🎮 Tic Tac Toe</h1>
+          <p class="subtitle">Ultimate Challenge</p>
+        </div>
+      </header>
 
-    <main>
-        <p>Turn</p>
-        <div class="gameboard">
+      <main>
+        <div class="game-info">
+          <p class="turn-indicator">Turn</p>
+        </div>
+
+        <div class="game-wrapper">
+          <div class="gameboard">
             <div class="gamecell" data-position="0"></div>
             <div class="gamecell" data-position="1"></div>
             <div class="gamecell" data-position="2"></div>
@@ -24,31 +32,57 @@
             <div class="gamecell" data-position="6"></div>
             <div class="gamecell" data-position="7"></div>
             <div class="gamecell" data-position="8"></div>
+          </div>
         </div>
-        <button type="button">Reset</button>
-    </main>
 
-    <dialog class="names-dialog">
+        <div class="button-group">
+          <button type="button" class="btn-reset">↻ New Game</button>
+        </div>
+      </main>
+
+      <dialog class="names-dialog">
         <form>
-            <p class="title">Let's start the game!</p>
-            <p  class="player-name">
-                <label for="name1">Player 1's Name:</label>
-                <input type="text" name="name1" id="name1" maxlength="15" required>
+          <p class="title">🚀 Let's Play!</p>
+          <div class="form-group">
+            <p class="player-name">
+              <label for="name1">✕ Player 1 Name</label>
+              <input
+                type="text"
+                name="name1"
+                id="name1"
+                maxlength="15"
+                placeholder="Enter your name"
+                required
+              />
             </p>
-            <p  class="player-name">
-                <label for="name2">Player 2's Name:</label>
-                <input type="text" name="name2" id="name2" maxlength="15" required>
+          </div>
+          <div class="form-group">
+            <p class="player-name">
+              <label for="name2">◯ Player 2 Name</label>
+              <input
+                type="text"
+                name="name2"
+                id="name2"
+                maxlength="15"
+                placeholder="Enter your name"
+                required
+              />
             </p>
-            <button>Confirm</button>
+          </div>
+          <button class="btn-confirm">Start Game</button>
         </form>
-    </dialog>
+      </dialog>
 
-    <dialog class="result-dialog">
-        <h1>Player X Wins!</h1>
-    </dialog>
+      <dialog class="result-dialog">
+        <div class="result-content">
+          <h1 class="result-title">Player X Wins!</h1>
+          <p class="result-message">Congratulations! 🎉</p>
+        </div>
+      </dialog>
 
-    <footer>
+      <footer>
         <p>Made by Marc Frances</p>
-    </footer>
-</body>
+      </footer>
+    </div>
+  </body>
 </html>

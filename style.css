@@ -1,229 +1,474 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 :root {
-    --RESULT-DIALOG-WIDTH: min(85vw, 500px);
-    --NAMES-DIALOG-WIDTH: min(85vw, 700px);
-    --HEADER-WIDTH: min(90vw, 550px);
-    --GAMEBOARD-SIDE: min(90vw, 470px);
+  /* Colors */
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --bg-dark: #0f0f1e;
+  --bg-light: #1a1a2e;
+  --accent-blue: #667eea;
+  --accent-purple: #764ba2;
+  --accent-pink: #f093fb;
+  --text-primary: #ffffff;
+  --text-secondary: #b8b8d1;
+  --border-color: rgba(255, 255, 255, 0.1);
 
-    --TITLE-FS: clamp(3rem, 13vw, 4.5rem);
-    --TURN-MSG-FS: clamp(1.5rem, 10vw, 2.5rem);
-    --PLAYER-SYMBOL-FS: clamp(2rem, 15vw, 5rem);
-    --FOOTER-FS: clamp(1rem, 5vw, 1.2rem);
-    --RESULT-DIALOG-FS: clamp(1.2rem, 8vw, 2.3rem);
+  /* Sizes */
+  --RESULT-DIALOG-WIDTH: min(85vw, 500px);
+  --NAMES-DIALOG-WIDTH: min(85vw, 700px);
+  --GAMEBOARD-SIDE: min(90vw, 480px);
 
-    --LIGHT-COLOR: rgb(216, 200, 173);
-    --EXTRA-LIGHT-COLOR: rgb(230, 223, 210);
+  /* Font Sizes */
+  --TITLE-FS: clamp(2.5rem, 12vw, 4rem);
+  --SUBTITLE-FS: clamp(0.9rem, 3vw, 1.2rem);
+  --TURN-MSG-FS: clamp(1.2rem, 8vw, 1.8rem);
+  --PLAYER-SYMBOL-FS: clamp(2.5rem, 16vw, 5rem);
+  --RESULT-DIALOG-FS: clamp(1.8rem, 6vw, 2.5rem);
 }
 
 html {
-    position: relative;
-    min-height: 100vh;
+  position: relative;
+  min-height: 100vh;
+  scroll-behavior: smooth;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: rgb(211, 162, 88);
-    margin-bottom: 100px;
-    user-select: none;
+  font-family: "Poppins", "Inter", sans-serif;
+  background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  margin-bottom: 100px;
+  user-select: none;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 /* HEADER */
 
 header {
-    padding-top: 30px;
-    margin-bottom: 40px;
+  padding: 40px 0 50px 0;
+  text-align: center;
+  animation: slideDown 0.6s ease-out;
+}
+
+.header-content {
+  background: rgba(102, 126, 234, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 30px 40px;
+  transition: all 0.3s ease;
+}
+
+.header-content:hover {
+  background: rgba(102, 126, 234, 0.15);
+  border-color: var(--accent-blue);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
 }
 
 header h1 {
-    margin: 0 auto;
-    padding: 20px 0;
-    width: var(--HEADER-WIDTH);
-    text-align: center;
-    font-size: var(--TITLE-FS);
-    background-color: var(--LIGHT-COLOR);
-    color: #333;
-    border-radius: 20px;
+  font-size: var(--TITLE-FS);
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
 }
 
-header h1:hover {
-    background-color: var(--EXTRA-LIGHT-COLOR);
+.subtitle {
+  font-size: var(--SUBTITLE-FS);
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 /* MAIN */
 
-main p {
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: var(--TURN-MSG-FS);
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 40px 0;
+}
+
+.game-info {
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+.turn-indicator {
+  font-size: var(--TURN-MSG-FS);
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(240, 147, 251, 0.1);
+  padding: 15px 35px;
+  border-radius: 50px;
+  display: inline-block;
+  border: 1px solid var(--border-color);
+  letter-spacing: 0.5px;
+}
+
+.game-wrapper {
+  animation: fadeIn 0.8s ease-out 0.4s both;
 }
 
 main .gameboard {
-    width: var(--GAMEBOARD-SIDE);
-    height: var(--GAMEBOARD-SIDE);
-    margin: 0 auto;
-    margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 20px;
-    background-color: var(--LIGHT-COLOR);
+  width: var(--GAMEBOARD-SIDE);
+  height: var(--GAMEBOARD-SIDE);
+  padding: 15px;
+  border-radius: 25px;
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
 
-    display: grid;
-    gap: 3px;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+
+  box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+  transition: all 0.3s ease;
+}
+
+main .gameboard:hover {
+  box-shadow: 0 30px 80px rgba(102, 126, 234, 0.25);
+  border-color: rgba(102, 126, 234, 0.4);
 }
 
 .gameboard .gamecell {
-    border: 2px solid black;
-    font-size: var(--PLAYER-SYMBOL-FS);
-    cursor: pointer;
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.1) 0%,
+    rgba(240, 147, 251, 0.1) 100%
+  );
+  border: 2px solid var(--border-color);
+  border-radius: 15px;
+  font-size: var(--PLAYER-SYMBOL-FS);
+  cursor: pointer;
+  font-weight: 700;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.gameboard .gamecell::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s;
 }
 
 .gameboard .gamecell:hover {
-    background-color: var(--EXTRA-LIGHT-COLOR);
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.3) 0%,
+    rgba(240, 147, 251, 0.3) 100%
+  );
+  border-color: var(--accent-pink);
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(240, 147, 251, 0.2);
+}
+
+.gameboard .gamecell:hover::before {
+  left: 100%;
+}
+
+.gamecell:not(:empty) {
+  color: var(--text-primary);
+  font-size: calc(var(--PLAYER-SYMBOL-FS) * 0.9);
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.button-group {
+  animation: fadeIn 0.8s ease-out 0.6s both;
 }
 
 main button {
-    display: block;
-    font: inherit;
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin: 0 auto;
-    padding: 20px 70px;
-    border: none;
-    border-radius: 10px;
-    background-color: var(--LIGHT-COLOR);
-    cursor: pointer;
+  display: inline-block;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-weight: 600;
+  padding: 18px 50px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  letter-spacing: 0.5px;
+
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+main button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.6s,
+    height 0.6s;
 }
 
 main button:hover {
-    background-color: var(--EXTRA-LIGHT-COLOR);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+}
+
+main button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+main button:active {
+  transform: translateY(-1px);
 }
 
 /* DIALOG */
 
 dialog {
-    position: fixed;
-    border: none;
-    border-radius: 20px;
-    user-select: none;
+  position: fixed;
+  border: none;
+  border-radius: 25px;
+  user-select: none;
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+  animation: dialogSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dialogSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* --- RESULT DIALOG */
 
 .result-dialog {
-    top: 300px;
-    left: calc(50% - (var(--RESULT-DIALOG-WIDTH) / 2));
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.result-dialog h1 {
-    padding: 70px 10px;
-    width: var(--RESULT-DIALOG-WIDTH);
-    text-align: center;
-    font-size: var(--RESULT-DIALOG-FS);
-    font-weight: 700;
+.result-content {
+  padding: 60px 40px;
+  width: var(--RESULT-DIALOG-WIDTH);
+  text-align: center;
+}
+
+.result-title {
+  font-size: var(--RESULT-DIALOG-FS);
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 15px;
+}
+
+.result-message {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 /* --- NAMES DIALOG */
 
 .names-dialog {
-    top: 200px;
-    left: calc(50% - (var(--NAMES-DIALOG-WIDTH) / 2));
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .names-dialog form {
-    padding: 50px 0 70px 0;
-    width: var(--NAMES-DIALOG-WIDTH);
-
-    display: grid;
-    row-gap: 50px;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto 1fr auto;
-    justify-items: center;
+  padding: 50px 60px;
+  width: var(--NAMES-DIALOG-WIDTH);
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
 }
 
 .names-dialog p.title {
-    grid-column: 1 / -1;
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
 
-   font-size: 2.5rem;
-   font-weight: 700;
+.form-group {
+  width: 100%;
 }
 
 .names-dialog p.player-name {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+}
 
-    font-size: 1.3rem;
-    font-weight: 500;
-    color: #333;
+.names-dialog label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
 }
 
 .names-dialog input {
-    width: 230px;
-    padding: 5px;
-    border: 2px solid #333;
-    border-radius: 5px;
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 1.05rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-family: "Inter", sans-serif;
+  transition: all 0.3s ease;
+}
+
+.names-dialog input::placeholder {
+  color: var(--text-secondary);
+}
+
+.names-dialog input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  background: rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+.names-dialog .btn-confirm {
+  margin-top: 15px;
+  width: 100%;
+  padding: 16px 40px;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+}
+
+.names-dialog .btn-confirm:hover {
+  box-shadow: 0 15px 40px rgba(245, 87, 108, 0.6);
+}
+
+@media screen and (max-width: 768px) {
+  .names-dialog form {
+    padding: 40px 30px;
+    gap: 25px;
+  }
+
+  .names-dialog p.title {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .names-dialog label {
     font-size: 1rem;
-}
+  }
 
-.names-dialog button {
-    grid-column: 1 / -1;
-
-    margin-top: 25px;
-    padding: 25px 70px;
-    background-color: rgb(116, 233, 116);
-    border: 0.5px solid black;
-    border-radius: 10px;
-    font: inherit;
-    font-size: 1.4rem;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.names-dialog button:hover {
-    background-color: rgb(146, 255, 146);
-}
-
-@media screen and (max-width: 600px) {
-    .names-dialog {
-        top: 100px;
-    }
-    .names-dialog form {
-        row-gap: 40px;
-        grid-template-columns: 1fr;
-    }
-    .names-dialog p.title {
-        font-size: clamp(1.5rem, 8vw, 2.2rem);
-    }
-    .names-dialog button {
-        padding-inline: 60px;
-        font-size: 1.2rem;
-    }
+  .names-dialog input {
+    padding: 12px 16px;
+    font-size: 1rem;
+  }
 }
 
 /* FOOTER */
 
 footer {
-    position: absolute;
-    bottom: 15px;
-    width: 100%;
-    text-align: center;
-    color: black;
-    font-size: var(--FOOTER-FS);
-    user-select: text;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  font-weight: 400;
+  user-select: text;
+  letter-spacing: 0.5px;
 }
