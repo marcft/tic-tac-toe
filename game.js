@@ -1,31 +1,35 @@
+// Variável para selecionar todas as células do jogo no html
 const gameCells = document.querySelectorAll('.gamecell');
+// Variável para selecionar o botão principal
 const resetButton = document.querySelector('main button');
-
+// Variável para selecionar a caixa de dialogo dos nomes
 const namesDialog = document.querySelector('.names-dialog');
+// Variável para selecionar o botão
 const namesDialogButton = namesDialog.querySelector('button');
 
+// Definir os objetos do jogador
 const Player = (name, symbol) => {
     const getSymbol = () => symbol;
     const getName = () => name;
     return {getSymbol, getName};
 }
 
-//Inicialization of Players
+//Inicializar o objeto Player
 namesDialog.showModal();
 namesDialogButton.addEventListener('click', (event) => {
     const form = namesDialog.querySelector('form');
     const player1Name = form.querySelector('#name1');
     const player2Name = form.querySelector('#name2');
     if (form.checkValidity()) {
-        event.preventDefault(); // Don't want to submit this form
-        const player1 = Player(player1Name.value, 'X');
-        const player2 = Player(player2Name.value, 'O');
+        event.preventDefault(); // Isso garante que o form NÃO será enviado
+        const player1 = Player(player1Name.value, 'X'); // Definir jogador 1 como x
+        const player2 = Player(player2Name.value, 'O'); // Definir jogador 2 como O
         namesDialog.close();
         gameInitialization(player1, player2);
     } 
 });
 
-//Game Initialization after player names being chosen
+//Inicialização do jogo após escolha dos nomes dos jogadores
 function gameInitialization(player1, player2) {
     const gameBoard = (() => {
         let gameBoardArray = [null, null, null, null, null, null, null, null, null];
