@@ -123,12 +123,15 @@ main .gameboard {
 }
 
 /* Cores específicas e acessíveis para os símbolos inseridos */
-.gamecell[aria-label*=", X"], 
-.gamecell:not(:empty):nth-child(odd) { /* Seletor fallback caso use texto direto */
+.gameboard .gamecell {
+    font-weight: bold;
+}
+
+.gameboard .gamecell[aria-label*=", X"] {
     color: var(--COLOR-X);
 }
-.gamecell[aria-label*=", O"],
-.gamecell:not(:empty):nth-child(even) {
+
+.gameboard .gamecell[aria-label*=", O"] {
     color: var(--COLOR-O);
 }
 
