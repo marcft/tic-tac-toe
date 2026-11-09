@@ -18,31 +18,16 @@
     --FOOTER-FS: clamp(1rem, 5vw, 1.2rem);
     --RESULT-DIALOG-FS: clamp(1.2rem, 8vw, 2.3rem);
 
-    /* Cores Padrão - Acessíveis com bom contraste */
-    --BG-COLOR: rgb(211, 162, 88);
-    --LIGHT-COLOR: rgb(216, 200, 173);
-    --EXTRA-LIGHT-COLOR: rgb(230, 223, 210);
-    --TEXT-COLOR: #333;
-    --BORDER-COLOR: black;
-    --FOCUS-COLOR: #0056b3;
-
-    /* Cores dos Símbolos Seguras para Daltonismo (Azul vs Laranja) */
-    --COLOR-X: #0072B2; 
-    --COLOR-O: #E69F00;
-}
-
-/* 
-   TEMA DE ALTO CONTRASTE / DALTONISMO 
-   Basta adicionar a classe 'high-contrast' na tag <html> ou <body> via JS se desejar ativá-lo 
-*/
-.high-contrast {
+    /* Cores Padrão - Acessíveis com alto contraste */
     --BG-COLOR: #121212;
     --LIGHT-COLOR: #1e1e1e;
     --EXTRA-LIGHT-COLOR: #333333;
     --TEXT-COLOR: #ffffff;
     --BORDER-COLOR: #ffffff;
-    --FOCUS-COLOR: #ffff00; /* Amarelo Puro para foco nítido */
-    --COLOR-X: #00ecff;
+    --FOCUS-COLOR: #ffff00;
+
+    /* Cores dos Símbolos Seguras para Daltonismo (Ciano vs Laranja) */
+    --COLOR-X: #00ecff; 
     --COLOR-O: #ffb700;
 }
 
@@ -57,7 +42,6 @@ body {
     margin-bottom: 100px;
     user-select: none;
     color: var(--TEXT-COLOR);
-    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* HEADER */
@@ -76,6 +60,7 @@ header h1 {
     background-color: var(--LIGHT-COLOR);
     color: var(--TEXT-COLOR);
     border-radius: 20px;
+    border: 2px solid var(--BORDER-COLOR);
 }
 
 header h1:hover {
@@ -98,6 +83,7 @@ main .gameboard {
     padding: 20px;
     border-radius: 20px;
     background-color: var(--LIGHT-COLOR);
+    border: 2px solid var(--BORDER-COLOR);
 
     display: grid;
     gap: 3px;
@@ -135,9 +121,9 @@ main .gameboard {
     color: var(--COLOR-O);
 }
 
-/* Acessibilidade: Destaca a célula selecionada*/
+/* Acessibilidade: Destaca a célula selecionada no game board*/
 .gameboard .gamecell:focus-visible {
-    outline: 4px var(--FOCUS-COLOR);
+    outline: 4px solid var(--FOCUS-COLOR);
     outline-offset: -4px;
 }
 
@@ -152,7 +138,7 @@ main button {
     font-weight: 500;
     margin: 0 auto;
     padding: 20px 70px;
-    border: 1px solid var(--BORDER-COLOR);
+    border: 2px solid var(--BORDER-COLOR);
     border-radius: 10px;
     background-color: var(--LIGHT-COLOR);
     color: var(--TEXT-COLOR);
@@ -167,12 +153,12 @@ main button:hover {
 
 dialog {
     margin: auto;
-    border: none;
+    border: 2px solid var(--BORDER-COLOR);
     border-radius: 20px;
     user-select: none;
-    background-color: white;
-    color: #333;
-    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.4);
+    background-color: var(--EXTRA-LIGHT-COLOR);
+    color: var(--TEXT-COLOR);
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.6);
     
     /* Configurações fundamentais para impedir cortes verticais */
     width: max-content;
@@ -182,7 +168,7 @@ dialog {
 }
 
 dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.75);
 }
 
 /* --- RESULT DIALOG */
@@ -202,7 +188,8 @@ dialog::backdrop {
     font-size: 1.1rem;
     cursor: pointer;
     border-radius: 8px;
-    border: 1px solid #333;
+    border: 2px solid var(--BORDER-COLOR);
+    color: var(--TEXT-COLOR);
 }
 
 /* --- NAMES DIALOG */
@@ -215,7 +202,7 @@ dialog::backdrop {
     display: grid;
     row-gap: 30px;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto; /* Mudado para auto para o grid se ajustar aos novos elementos */
+    grid-template-rows: auto;
     justify-items: center;
 }
 
@@ -234,7 +221,7 @@ dialog::backdrop {
     gap: 10px;
     font-size: 1.3rem;
     font-weight: 500;
-    color: #333;
+    color: var(--TEXT-COLOR);
     width: 100%;
     align-items: center;
 }
@@ -252,20 +239,27 @@ dialog::backdrop {
     width: 100%;
     max-width: 260px;
     padding: 10px;
-    border: 2px solid #333;
+    border: 2px solid var(--BORDER-COLOR);
     border-radius: 5px;
     font-size: 1rem;
     font-family: inherit;
-    background-color: white;
+    background-color: var(--EXTRA-LIGHT-COLOR);
+    color: var(--TEXT-COLOR);
     box-sizing: border-box;
+}
+
+.names-dialog select option {
+    background-color: var(--LIGHT-COLOR);
+    color: var(--TEXT-COLOR);
 }
 
 .names-dialog button {
     grid-column: 1 / -1;
     margin-top: 20px;
     padding: 25px 70px;
-    background-color: rgb(116, 233, 116);
-    border: 0.5px solid black;
+    background-color: #008f39;
+    color: white;
+    border: 2px solid var(--BORDER-COLOR);
     border-radius: 10px;
     font: inherit;
     font-size: 1.4rem;
@@ -275,7 +269,7 @@ dialog::backdrop {
 }
 
 .names-dialog button:hover {
-    background-color: rgb(146, 255, 146);
+    background-color: #00b347;
 }
 
 @media screen and (max-width: 600px) {
@@ -305,4 +299,15 @@ footer {
     color: var(--BORDER-COLOR);
     font-size: var(--FOOTER-FS);
     user-select: text;
+}
+
+/* Acessibilidade: 
+Aplica a mesma borda amarela de foco para TODOS os elementos interativos do jogo */
+main button:focus-visible,
+.names-dialog button:focus-visible,
+.names-dialog input:focus-visible,
+.names-dialog select:focus-visible,
+.result-dialog button:focus-visible {
+    outline: 4px solid var(--FOCUS-COLOR);
+    outline-offset: 2px;
 }
