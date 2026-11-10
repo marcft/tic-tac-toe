@@ -1,15 +1,61 @@
 const gameCells = document.querySelectorAll('.gamecell');
-const resetButton = document.querySelector('main button');
-
+const resetButton = document.getElementById('btn-reset');
 const namesDialog = document.querySelector('.names-dialog');
 const namesDialogButton = namesDialog.querySelector('button');
 
-let IA_mode = false; 
+let IA_mode = false;
+let translations = null;
+let currentLang = 'en';
+let isAiThinking = false;
 const modeButton = document.getElementById('mode-button');
 
-modeButton.addEventListener('change', function() {
-    IA_mode = (this.value === "true");
-});
+const selectMode = document.getElementById('select-mode');
+if (selectMode) {
+    selectMode.addEventListener('change', function() {
+        IA_mode = (this.value === "pve");
+    });
+} else if (modeButton) {
+    modeButton.addEventListener('change', function() {
+        IA_mode = (this.value === "true");
+    });
+}
+
+function applyTranslations(lang) {
+    if (!translations) return;
+    
+    if (lang === 'pt' || lang === 'pt-BR') lang = 'ptbr';
+    if (lang === 'pt-PT') lang = 'ptpt';
+    
+    if (!translations[lang]) lang = 'ptbr';
+    currentLang = lang;
+    
+    document.getElementById('html-root')?.setAttribute('lang', lang);
+    
+    if (document.getElementById('page-title')) document.getElementById('page-title').textContent = translations[lang].title;
+    if (document.getElementById('main-heading')) document.getElementById('main-heading').textContent = translations[lang].title;
+    if (document.getElementById('setup-title')) document.getElementById('setup-title').textContent = translations[lang].chooseLanguage;
+    if (document.getElementById('btn-confirm')) document.getElementById('btn-confirm').textContent = translations[lang].start;
+    
+    const resetButton = document.getElementById('btn-reset');
+    if (resetButton) resetButton.textContent = translations[lang].playagain;
+    
+    const board = document.getElementById('board');
+    if (board) board.setAttribute('aria-label', translations[lang].title);
+
+    const player2NameInput = document.getElementById('name2');
+    if (IA_mode && player2NameInput) {
+        player2NameInput.value = translations[currentLang].aiName;
+    }
+    
+    const playerTurnTitle = document.querySelector('main p');
+    if (playerTurnTitle && currentPlayer) {
+        if (gameEnded) {
+            playerTurnTitle.textContent = translations[lang].gameOver;
+        } else {
+            playerTurnTitle.textContent = `${translations[lang].turn} ${currentPlayer.getName()}`;
+        }
+    }
+}
 
 const Player = (name, symbol) => {
     const getSymbol = () => symbol;
@@ -23,13 +69,21 @@ namesDialogButton.addEventListener('click', (event) => {
     const form = namesDialog.querySelector('form');
     const player1Name = form.querySelector('#name1');
     const player2Name = form.querySelector('#name2');
+
+    if (IA_mode && player2Name) {
+        player2Name.removeAttribute('required');
+        if (!player2Name.value) player2Name.value = "AI";
+    }
+
     if (form.checkValidity()) {
         event.preventDefault(); // Don't want to submit this form
         const player1 = Player(player1Name.value, 'X');
         const player2 = Player(player2Name.value, 'O');
         namesDialog.close();
         gameInitialization(player1, player2);
-    } 
+    } else {
+        form.reportValidity();
+    }
 });
 
 //Game Initialization after player names being chosen
@@ -132,8 +186,8 @@ function gameInitialization(player1, player2) {
     
     const displayController = (() => {
         const playerTurnTitle = document.querySelector('main p');
-        const winnerDialog = document.querySelector('.result-dialog');
-        const winnerDialogMessage = winnerDialog.querySelector('h1');
+        const winnerDialog = document.getElementById('finish-dialog') || document.querySelector('.result-dialog');
+        const winnerDialogMessage = document.getElementById('result-message') || winnerDialog?.querySelector('h1');
     
         // Close dialog when click outside form
         winnerDialog.addEventListener('click', (event) => {
@@ -144,6 +198,17 @@ function gameInitialization(player1, player2) {
         
         const addPlayerSymbol = (target, symbol) => {
             target.textContent = symbol;
+
+            target.classList.remove('x-color', 'o-color');
+            if (symbol === 'X') target.classList.add('x-color');
+            if (symbol === 'O') target.classList.add('o-color');
+
+            const pos = parseInt(target.dataset.position) + 1;
+            if (translations && translations[currentLang]) {
+                target.setAttribute('aria-label', `${translations[currentLang].square} ${pos}, ${symbol}`);
+            } else {
+                target.setAttribute('aria-label', `Square ${pos}, ${symbol}`);
+            }
         }
     
         const changePlayerTurnTitle = (message) => {
@@ -151,12 +216,23 @@ function gameInitialization(player1, player2) {
         }
     
         const showResultDialog = (message) => {
-            winnerDialogMessage.textContent = message;
+             if (winnerDialogMessage) winnerDialogMessage.textContent = message;
             winnerDialog.showModal();
+            winnerDialogMessage?.focus();
         }
     
         const cleanGameboard = () => {
-            gameCells.forEach(cell => {cell.textContent = ''})
+            gameCells.forEach((cell,idx) => {
+                cell.textContent = '';
+                cell.classList.remove('x-color', 'o-color');
+
+                if (translations && translations[currentLang]) {
+                    cell.setAttribute('aria-label', `${translations[currentLang].square} ${idx + 1}, ${translations[currentLang].empty}`);
+                } else {
+                    cell.setAttribute('aria-label', `Square ${idx + 1}, Empty`);
+                }
+                cell.setAttribute('tabindex', idx === 0 ? '0' : '-1');
+            });
         }
     
         return {addPlayerSymbol, changePlayerTurnTitle, showResultDialog, cleanGameboard};
@@ -168,7 +244,11 @@ function gameInitialization(player1, player2) {
     let gameEnded = false;
 
     // Inicialização do PlayerTurnTitle
-    displayController.changePlayerTurnTitle(`${currentPlayer.getName()}'s Turn`);
+    const initialTurnMsg = translations 
+            ? `${translations[currentLang].turn}${currentPlayer.getName()}`
+            : `${currentPlayer.getName()}'s Turn`;
+        displayController.changePlayerTurnTitle(initialTurnMsg);
+        displayController.cleanGameboard();
 
     const makePlayerMove = (cell, player) => {
         // Se a célula já tiver texto, retorna true (está ocupada)
@@ -179,44 +259,57 @@ function gameInitialization(player1, player2) {
         return false;
     }
 
-    const parseSymbolToPlayer = (symbol, player1, player2) => {
+    const parseSymbolToPlayer = (symbol, p1, p2) => {
         switch (symbol) {
-            case player1.getSymbol(): return player1;
-            case player2.getSymbol(): return player2;
+            case p1.getSymbol(): return p1;
+            case p2.getSymbol(): return p2;
             default: throw new Error('Invalid symbol provided');
         }
     }
 
-    const processGameResult = (player1, player2) => {
+    const processGameResult = (p1, p2) => {
         const res = { gameEnded: false };
         const winnerObj = gameBoard.checkWinner();
         
         if (winnerObj.hasSomeoneWon) {
-            const winnerPlayer = parseSymbolToPlayer(winnerObj.winnerSymbol, player1, player2);
-            const message = `${winnerPlayer.getName()} Wins!`;
-            displayController.showResultDialog(message);
-            res.gameEnded = true;
-        } else if (winnerObj.tie) {
-            const message = `It's a Tie`;
-            displayController.showResultDialog(message);
-            res.gameEnded = true;
-        }
-        return res;
+        const winnerPlayer = parseSymbolToPlayer(winnerObj.winnerSymbol, p1, p2);
+        // Adicionado um espaço em branco " " antes de invocar a chave do JSON
+        const winMsg = translations 
+            ? `${winnerPlayer.getName()} ${translations[currentLang].win}`
+            : `${winnerPlayer.getName()} Wins!`;
+        displayController.showResultDialog(winMsg);
+        res.gameEnded = true;
+    } else if (winnerObj.tie) {
+        const tieMsg = translations ? translations[currentLang].draw : "It's a Tie";
+        displayController.showResultDialog(tieMsg);
+        res.gameEnded = true;
     }
-
+    return res;
+}
     const changePlayerTurn = () => {
         currentPlayer = currentPlayer === firstPlayer ? secondPlayer : firstPlayer;
-        const message = gameEnded ? 'Game End' : `${currentPlayer.getName()}'s Turn`;
-        displayController.changePlayerTurnTitle(message);
-
-        if (!gameEnded && IA_mode && currentPlayer === secondPlayer) {
-        setTimeout(doIAMove, 1000);
+        let message = '';
+            if (gameEnded) {
+                message = translations ? translations[currentLang].gameOver : 'Game End';
+            } else {
+                message = translations
+                    ? `${translations[currentLang].turn}${currentPlayer.getName()}`
+                    : `${currentPlayer.getName()}'s Turn`;
+            }
+            displayController.changePlayerTurnTitle(message);
+            
+            if (!gameEnded && IA_mode && currentPlayer === secondPlayer && !isAiThinking) {
+                isAiThinking = true;
+                setTimeout(doIAMove, 600); // 600ms para uma resposta ágil
+            }
         }
-    }
 
     const doIAMove = () => {
-    if (gameEnded) return;
-
+        if (gameEnded) {
+            isAiThinking = false;
+            return;
+    }
+    
     const arr = gameBoard.getArray(); 
     let targetPosition = null;
 
@@ -259,14 +352,17 @@ function gameInitialization(player1, player2) {
         
         const result = processGameResult(firstPlayer, secondPlayer);
         gameEnded = result.gameEnded;
-        changePlayerTurn();
-    }
-};
 
+        isAiThinking = false;
+        changePlayerTurn();
+    } else {
+        isAiThinking = false;
+    }
+}
     const doPlayerTurn = function(e) {
-    if (gameEnded) return;
+    if (gameEnded  || isAiThinking) return;
     
-    // 🌟 PROTEÇÃO: Impede cliques humanos se for o turno da IA
+    // PROTEÇÃO: Impede cliques humanos se for o turno da IA
     if (IA_mode && currentPlayer === secondPlayer) return;
 
     const isCellTaken = makePlayerMove(e.target, currentPlayer);
@@ -278,11 +374,16 @@ function gameInitialization(player1, player2) {
 }
 
     const cleanGame = function() {
-        displayController.cleanGameboard();
         gameBoard.clearArray();
+        displayController.cleanGameboard();
         currentPlayer = firstPlayer; // Garante que o Player 1 sempre recomeça
-        displayController.changePlayerTurnTitle(`${currentPlayer.getName()}'s Turn`);
         gameEnded = false;
+        isAiThinking = false;
+
+        const rstMsg = translations
+            ? `${translations[currentLang].turn}${currentPlayer.getName()}`
+            : `${currentPlayer.getName()}'s Turn`;
+        displayController.changePlayerTurnTitle(rstMsg);
     }
 
     return { doPlayerTurn, cleanGame };
@@ -291,7 +392,32 @@ function gameInitialization(player1, player2) {
         
     resetButton.addEventListener('click', game.cleanGame);
     
-    gameCells.forEach(cell => {
-        cell.addEventListener('click', game.doPlayerTurn);
-    });
+    resetButton?.addEventListener('click', game.cleanGame);
+    gameCells.forEach(cell => { cell.addEventListener('click', game.doPlayerTurn); });
 }
+
+// Ouvinte do Teclado (Setas) de Acessibilidade
+document.getElementById('board')?.addEventListener('keydown', (event) => {
+    const validKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+    if (!validKeys.includes(event.key)) return;
+    event.preventDefault(); 
+    const currentCell = document.activeElement;
+    if (!currentCell || !currentCell.classList.contains('gamecell')) return;
+    const currentPos = parseInt(currentCell.dataset.position);
+    let nextPos = currentPos;
+    switch (event.key) {
+        case 'ArrowLeft':  if (currentPos % 3 !== 0) nextPos = currentPos - 1; break;
+        case 'ArrowRight': if (currentPos % 3 !== 2) nextPos = currentPos + 1; break;
+        case 'ArrowUp':    if (currentPos >= 3) nextPos = currentPos - 3; break;
+        case 'ArrowDown':  if (currentPos <= 5) nextPos = currentPos + 3; break;
+    }
+    const nextCell = document.querySelector(`.gamecell[data-position="${nextPos}"]`);
+    if (nextCell && nextPos !== currentPos) {
+        currentCell.setAttribute('tabindex', '-1');
+        nextCell.setAttribute('tabindex', '0');
+        nextCell.focus();
+    }
+});
+
+// Inicialização do JSON de Idiomas
+loadLanguages();

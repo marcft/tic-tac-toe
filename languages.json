@@ -1,0 +1,81 @@
+{
+    "ptbr": {
+        "title": "Jogo da Velha",
+        "chooseLanguage": "Escolha o idioma",
+        "start": "Jogar",
+        "turn": "Vez de",
+        "threerow": "Trinca!",
+        "win": "Ganhou!",
+        "lose": "Perdeu!",
+        "draw": "Deu Velha!",
+        "playagain": "Jogar novamente",
+        "gameOver": "Fim do Jogo",
+        "empty": "Vazio",
+        "square": "Espaço",
+        "aiName": "Máquina"
+    },
+
+    "ptpt": {
+        "title": "Jogo do Galo",
+        "chooseLanguage": "Escolhe o idioma",
+        "start": "Jogar",
+        "turn": "Vez de",
+        "threerow": "Três em linha!",
+        "win": "Ganhaste!",
+        "lose": "Perdeste!",
+        "draw": "Empate!",
+        "playagain": "Jogar novamente",
+        "gameOver": "Fim do Jogo",
+        "empty": "Vazio",
+        "square": "Espaço",
+        "aiName": "Máquina"
+    },
+
+    "es": {
+        "title": "Tres en raya",
+        "chooseLanguage": "Elige el idioma",
+        "start": "Jugar",
+        "turn": "Turno de",
+        "threerow": "¡Tres en raya!",
+        "win": "¡Victoria!",
+        "lose": "¡Derrota!",
+        "draw": "¡Tablas!",
+        "playagain": "Jugar de nuevo",
+        "gameOver": "Fin del Juego",
+        "empty": "Vacío",
+        "square": "Casilla",
+        "aiName": "Máquina"
+    },
+
+    "fr": {
+        "title": "Morpion",
+        "chooseLanguage": "Choisissez la langue",
+        "start": "Jouer",
+        "turn": "Tour de",
+        "threerow": "Trois en ligne !",
+        "win": "Victoire !",
+        "lose": "Défaite !",
+        "draw": "Égalité !",
+        "playagain": "Rejouer",
+        "gameOver": "Fin du Jeu",
+        "empty": "Vide",
+        "square": "Case",
+        "aiName": "IA"
+    },
+
+    "de": {
+        "title": "Tic-Tac-Toe",
+        "chooseLanguage": "Sprache auswählen",
+        "start": "Spielen",
+        "turn": "Am Zug:",
+        "threerow": "Drei in einer Reihe!",
+        "win": "Sieg!",
+        "lose": "Niederlage!",
+        "draw": "Unentschieden!",
+        "playagain": "Nochmal spielen",
+        "gameOver": "Spiel vorbei",
+        "empty": "Leer",
+        "square": "Feld",
+        "aiName": "KI"
+    }
+}
