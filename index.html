@@ -1,50 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe</title>
+    <title id="page-title">Tic Tac Toe</title>
     <link rel="stylesheet" href="style.css">
     <script src="game.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>Tic Tac Toe</h1>
+        <h1 id="main-heading">Tic Tac Toe</h1>
     </header>
 
     <main>
-        <p>Turn</p>
-        <div class="gameboard">
-            <div class="gamecell" data-position="0"></div>
-            <div class="gamecell" data-position="1"></div>
-            <div class="gamecell" data-position="2"></div>
-            <div class="gamecell" data-position="3"></div>
-            <div class="gamecell" data-position="4"></div>
-            <div class="gamecell" data-position="5"></div>
-            <div class="gamecell" data-position="6"></div>
-            <div class="gamecell" data-position="7"></div>
-            <div class="gamecell" data-position="8"></div>
+        <p id="turn-display" aria-live="polite">Turn</p>
+        <div class="gameboard" role="grid" id="board" aria-label="Tic Tac Toe Board">
+            <button type="button" class="gamecell" role="gridcell" data-position="0" tabindex="0" aria-label="Square 1, Empty"></button>
+            <button type="button" class="gamecell" role="gridcell" data-position="1" tabindex="-1" aria-label="Square 2, Empty"></button>
+            <button type="button" class="gamecell" role="gridcell" data-position="2" tabindex="-1" aria-label="Square 3, Empty"></button>
+            <button type="button" class="gamecell" role="gridcell" data-position="3" tabindex="-1" aria-label="Square 4, Empty"></button>
+            <button type="button" class="gamecell" role="gridcell" data-position="4" tabindex="-1" aria-label="Square 5, Empty"></button>
+            <button type="button" class="gamecell" role="gridcell" data-position="5" tabindex="-1" aria-label="Square 6, Empty"></button>
+            <button type="button" class="gamecell" role="gridcell" data-position="6" tabindex="-1" aria-label="Square 7, Empty"></button>
+            <button type="button" class="gamecell" role="gridcell" data-position="7" tabindex="-1" aria-label="Square 8, Empty"></button>
+            <button type="button" class="gamecell" role="gridcell" data-position="8" tabindex="-1" aria-label="Square 9, Empty"></button>
         </div>
-        <button type="button">Reset</button>
+        <button type="button" id="btn-reset">Reset</button>
     </main>
 
-    <dialog class="names-dialog">
-        <form>
-            <p class="title">Let's start the game!</p>
+    <dialog class="names-dialog" id="setup-dialog">
+        <form method="dialog">
+            <p class="title" id="setup-title">Let's start the game!</p>
+
+            <!--Creating the select language button-->
+            <p class="config-field">
+            <label id = lang-label>Select the Language:</label>
+                <select>id = select-button
+                    <option value = English>English</option>
+                    <option value = Português>Português</option>
+                    <option value = Español>Español</option>
+                </select>
+            </p>
+            <!--Creating the play agaist AI-->
+            <p class="config-field"> 
+            <label id="ai-label">Select the Game Mode:</label> 
+                <select id="mode-button">
+                    <option value="false">Player vs Player</option> 
+                    <option value="true">Player Vs AI</option> 
+                </select> 
+            </p>
+            <!-- Player 1's name (always visible) -->
             <p  class="player-name">
-                <label for="name1">Player 1's Name:</label>
+                <label for="name1" id="label-p1">Player 1's Name:</label>
                 <input type="text" name="name1" id="name1" maxlength="15" required>
             </p>
-            <p  class="player-name">
+            <!-- Player 2's name (only visible in player vs player) -->
+            <p  class="player-name" id="p2-container">
                 <label for="name2">Player 2's Name:</label>
                 <input type="text" name="name2" id="name2" maxlength="15" required>
             </p>
-            <button>Confirm</button>
+            <button type="submit" id="btn-confirm">Confirm</button>
         </form>
     </dialog>
 
-    <dialog class="result-dialog">
-        <h1>Player X Wins!</h1>
+    <dialog class="result-dialog" id="finish-dialog" aria-modal="true">
+        <h1 id="result-message" aria-live="assertive">Player X Wins!</h1>
     </dialog>
 
     <footer>
