@@ -4,10 +4,14 @@ const namesDialog = document.querySelector('.names-dialog');
 const namesDialogButton = namesDialog.querySelector('button');
 
 let IA_mode = false;
-let translations = null;
-let currentLang = 'en';
+let translations = null; // Whole languages.json, fetched once and kept in memory
+const LANGUAGES_URL = 'languages.json';
+const LANGUAGE_STORAGE_KEY = 'language';
+const DEFAULT_LANG = 'en'; // Used when there is no saved choice and the browser language is not in the JSON
+let currentLang = DEFAULT_LANG;
 let isAiThinking = false;
 const modeButton = document.getElementById('mode-button');
+const languageSelect = document.getElementById('select-button');
 
 const selectMode = document.getElementById('select-mode');
 if (selectMode) {
@@ -20,40 +24,77 @@ if (selectMode) {
     });
 }
 
-function applyTranslations(lang) {
-    if (!translations) return;
-    
-    if (lang === 'pt' || lang === 'pt-BR') lang = 'ptbr';
-    if (lang === 'pt-PT') lang = 'ptpt';
-    
-    if (!translations[lang]) lang = 'ptbr';
+// The option value is the language id used as key in languages.json
+if (languageSelect) {
+    languageSelect.addEventListener('change', function() {
+        setLanguage(this.value);
+    });
+}
+
+// Single lookup function: returns the text of "key" in the current language.
+// Placeholders like {name} are replaced with the values given in params.
+function translate(key, params = {}) {
+    const text = translations?.[currentLang]?.[key];
+    if (text === undefined) return key; // JSON not loaded yet or key missing
+    return text.replace(/\{(\w+)\}/g, (placeholder, name) => params[name] ?? placeholder);
+}
+
+// Fetches languages.json only once and applies the initial language
+async function loadLanguages() {
+    try {
+        const response = await fetch(LANGUAGES_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        translations = await response.json();
+    } catch (error) {
+        console.error('Could not load the languages file:', error);
+        return;
+    }
+    setLanguage(getInitialLanguage());
+}
+
+// Priority: saved preference > browser language (if present in the JSON) > default language
+function getInitialLanguage() {
+    const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (saved && translations[saved]) return saved;
+
+    for (const code of navigator.languages ?? [navigator.language]) {
+        const normalized = code.toLowerCase().replace(/[^a-z]/g, ''); // "pt-BR" -> "ptbr"
+        if (translations[normalized]) return normalized;
+        // "es-MX" -> "es", "pt-AO" -> first Portuguese id found in the JSON
+        const match = Object.keys(translations).find(id => id.startsWith(normalized.slice(0, 2)));
+        if (match) return match;
+    }
+    return DEFAULT_LANG;
+}
+
+function setLanguage(lang) {
+    if (!translations?.[lang]) return;
     currentLang = lang;
-    
-    document.getElementById('html-root')?.setAttribute('lang', lang);
-    
-    if (document.getElementById('page-title')) document.getElementById('page-title').textContent = translations[lang].title;
-    if (document.getElementById('main-heading')) document.getElementById('main-heading').textContent = translations[lang].title;
-    if (document.getElementById('setup-title')) document.getElementById('setup-title').textContent = translations[lang].chooseLanguage;
-    if (document.getElementById('btn-confirm')) document.getElementById('btn-confirm').textContent = translations[lang].start;
-    
-    const resetButton = document.getElementById('btn-reset');
-    if (resetButton) resetButton.textContent = translations[lang].playagain;
-    
-    const board = document.getElementById('board');
-    if (board) board.setAttribute('aria-label', translations[lang].title);
+    if (languageSelect) languageSelect.value = lang;
+    applyTranslations();
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+}
+
+// Refreshes the static texts of the page. Dynamic messages call translate() when they are shown.
+function applyTranslations() {
+    // The option carries the real BCP 47 code (pt-BR, pt-PT...) in its lang attribute
+    document.getElementById('html-root')?.setAttribute('lang', languageSelect?.selectedOptions[0]?.lang || currentLang);
+
+    const setText = (id, key) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = translate(key);
+    };
+    setText('page-title', 'title');
+    setText('main-heading', 'title');
+    setText('setup-title', 'chooseLanguage');
+    setText('btn-confirm', 'start');
+    setText('btn-reset', 'playagain');
+
+    document.getElementById('board')?.setAttribute('aria-label', translate('title'));
 
     const player2NameInput = document.getElementById('name2');
     if (IA_mode && player2NameInput) {
-        player2NameInput.value = translations[currentLang].aiName;
-    }
-    
-    const playerTurnTitle = document.querySelector('main p');
-    if (playerTurnTitle && currentPlayer) {
-        if (gameEnded) {
-            playerTurnTitle.textContent = translations[lang].gameOver;
-        } else {
-            playerTurnTitle.textContent = `${translations[lang].turn} ${currentPlayer.getName()}`;
-        }
+        player2NameInput.value = translate('aiName');
     }
 }
 
@@ -63,8 +104,7 @@ const Player = (name, symbol) => {
     return {getSymbol, getName};
 }
 
-//Inicialization of Players
-namesDialog.showModal();
+//Inicialization of Players (the dialog is opened at the end of the file, after the translations are loaded)
 namesDialogButton.addEventListener('click', (event) => {
     const form = namesDialog.querySelector('form');
     const player1Name = form.querySelector('#name1');
@@ -72,7 +112,7 @@ namesDialogButton.addEventListener('click', (event) => {
 
     if (IA_mode && player2Name) {
         player2Name.removeAttribute('required');
-        if (!player2Name.value) player2Name.value = "AI";
+        if (!player2Name.value) player2Name.value = translate('aiName');
     }
 
     if (form.checkValidity()) {
@@ -204,11 +244,7 @@ function gameInitialization(player1, player2) {
             if (symbol === 'O') target.classList.add('o-color');
 
             const pos = parseInt(target.dataset.position) + 1;
-            if (translations && translations[currentLang]) {
-                target.setAttribute('aria-label', `${translations[currentLang].square} ${pos}, ${symbol}`);
-            } else {
-                target.setAttribute('aria-label', `Square ${pos}, ${symbol}`);
-            }
+            target.setAttribute('aria-label', `${translate('square')} ${pos}, ${symbol}`);
         }
     
         const changePlayerTurnTitle = (message) => {
@@ -226,11 +262,7 @@ function gameInitialization(player1, player2) {
                 cell.textContent = '';
                 cell.classList.remove('x-color', 'o-color');
 
-                if (translations && translations[currentLang]) {
-                    cell.setAttribute('aria-label', `${translations[currentLang].square} ${idx + 1}, ${translations[currentLang].empty}`);
-                } else {
-                    cell.setAttribute('aria-label', `Square ${idx + 1}, Empty`);
-                }
+                cell.setAttribute('aria-label', `${translate('square')} ${idx + 1}, ${translate('empty')}`);
                 cell.setAttribute('tabindex', idx === 0 ? '0' : '-1');
             });
         }
@@ -244,10 +276,7 @@ function gameInitialization(player1, player2) {
     let gameEnded = false;
 
     // Inicialização do PlayerTurnTitle
-    const initialTurnMsg = translations 
-            ? `${translations[currentLang].turn}${currentPlayer.getName()}`
-            : `${currentPlayer.getName()}'s Turn`;
-        displayController.changePlayerTurnTitle(initialTurnMsg);
+    displayController.changePlayerTurnTitle(translate('turn', {name: currentPlayer.getName()}));
         displayController.cleanGameboard();
 
     const makePlayerMove = (cell, player) => {
@@ -273,29 +302,19 @@ function gameInitialization(player1, player2) {
         
         if (winnerObj.hasSomeoneWon) {
         const winnerPlayer = parseSymbolToPlayer(winnerObj.winnerSymbol, p1, p2);
-        // Adicionado um espaço em branco " " antes de invocar a chave do JSON
-        const winMsg = translations 
-            ? `${winnerPlayer.getName()} ${translations[currentLang].win}`
-            : `${winnerPlayer.getName()} Wins!`;
-        displayController.showResultDialog(winMsg);
+        displayController.showResultDialog(translate('win', {name: winnerPlayer.getName()}));
         res.gameEnded = true;
     } else if (winnerObj.tie) {
-        const tieMsg = translations ? translations[currentLang].draw : "It's a Tie";
-        displayController.showResultDialog(tieMsg);
+        displayController.showResultDialog(translate('draw'));
         res.gameEnded = true;
     }
     return res;
 }
     const changePlayerTurn = () => {
         currentPlayer = currentPlayer === firstPlayer ? secondPlayer : firstPlayer;
-        let message = '';
-            if (gameEnded) {
-                message = translations ? translations[currentLang].gameOver : 'Game End';
-            } else {
-                message = translations
-                    ? `${translations[currentLang].turn}${currentPlayer.getName()}`
-                    : `${currentPlayer.getName()}'s Turn`;
-            }
+        const message = gameEnded
+                ? translate('gameOver')
+                : translate('turn', {name: currentPlayer.getName()});
             displayController.changePlayerTurnTitle(message);
             
             if (!gameEnded && IA_mode && currentPlayer === secondPlayer && !isAiThinking) {
@@ -380,10 +399,7 @@ function gameInitialization(player1, player2) {
         gameEnded = false;
         isAiThinking = false;
 
-        const rstMsg = translations
-            ? `${translations[currentLang].turn}${currentPlayer.getName()}`
-            : `${currentPlayer.getName()}'s Turn`;
-        displayController.changePlayerTurnTitle(rstMsg);
+        displayController.changePlayerTurnTitle(translate('turn', {name: currentPlayer.getName()}));
     }
 
     return { doPlayerTurn, cleanGame };
@@ -419,5 +435,5 @@ document.getElementById('board')?.addEventListener('keydown', (event) => {
     }
 });
 
-// Inicialização do JSON de Idiomas
-loadLanguages();
+// Inicialização do JSON de Idiomas: the setup dialog opens only after the translations are loaded
+loadLanguages().finally(() => namesDialog.showModal());
