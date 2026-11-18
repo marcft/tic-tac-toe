@@ -1,0 +1,97 @@
+{
+    "en": {
+        "title": "Tic Tac Toe",
+        "chooseLanguage": "Choose the language",
+        "start": "Play",
+        "turn": "{name}'s Turn",
+        "threerow": "Three in a row!",
+        "win": "{name} Wins!",
+        "lose": "You lost!",
+        "draw": "It's a Tie!",
+        "playagain": "Play again",
+        "gameOver": "Game Over",
+        "empty": "Empty",
+        "square": "Square",
+        "aiName": "AI"
+    },
+
+    "ptbr": {
+        "title": "Jogo da Velha",
+        "chooseLanguage": "Escolha o idioma",
+        "start": "Jogar",
+        "turn": "Vez de {name}",
+        "threerow": "Trinca!",
+        "win": "{name} Ganhou!",
+        "lose": "Perdeu!",
+        "draw": "Deu Velha!",
+        "playagain": "Jogar novamente",
+        "gameOver": "Fim do Jogo",
+        "empty": "Vazio",
+        "square": "Espaço",
+        "aiName": "Máquina"
+    },
+
+    "ptpt": {
+        "title": "Jogo do Galo",
+        "chooseLanguage": "Escolhe o idioma",
+        "start": "Jogar",
+        "turn": "Vez de {name}",
+        "threerow": "Três em linha!",
+        "win": "{name} Ganhaste!",
+        "lose": "Perdeste!",
+        "draw": "Empate!",
+        "playagain": "Jogar novamente",
+        "gameOver": "Fim do Jogo",
+        "empty": "Vazio",
+        "square": "Espaço",
+        "aiName": "Máquina"
+    },
+
+    "es": {
+        "title": "Tres en raya",
+        "chooseLanguage": "Elige el idioma",
+        "start": "Jugar",
+        "turn": "Turno de {name}",
+        "threerow": "¡Tres en raya!",
+        "win": "{name} ¡Victoria!",
+        "lose": "¡Derrota!",
+        "draw": "¡Tablas!",
+        "playagain": "Jugar de nuevo",
+        "gameOver": "Fin del Juego",
+        "empty": "Vacío",
+        "square": "Casilla",
+        "aiName": "Máquina"
+    },
+
+    "fr": {
+        "title": "Morpion",
+        "chooseLanguage": "Choisissez la langue",
+        "start": "Jouer",
+        "turn": "Tour de {name}",
+        "threerow": "Trois en ligne !",
+        "win": "{name} Victoire !",
+        "lose": "Défaite !",
+        "draw": "Égalité !",
+        "playagain": "Rejouer",
+        "gameOver": "Fin du Jeu",
+        "empty": "Vide",
+        "square": "Case",
+        "aiName": "IA"
+    },
+
+    "de": {
+        "title": "Tic-Tac-Toe",
+        "chooseLanguage": "Sprache auswählen",
+        "start": "Spielen",
+        "turn": "Am Zug: {name}",
+        "threerow": "Drei in einer Reihe!",
+        "win": "{name} Sieg!",
+        "lose": "Niederlage!",
+        "draw": "Unentschieden!",
+        "playagain": "Nochmal spielen",
+        "gameOver": "Spiel vorbei",
+        "empty": "Leer",
+        "square": "Feld",
+        "aiName": "KI"
+    }
+}
