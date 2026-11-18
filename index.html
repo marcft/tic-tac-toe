@@ -34,11 +34,15 @@
 
             <!--Creating the select language button-->
             <p class="config-field">
-            <label id = lang-label>Select the Language:</label>
-                <select>id = select-button
-                    <option value = English>English</option>
-                    <option value = Português>Português</option>
-                    <option value = Español>Español</option>
+                        <label id="lang-label" for="select-button">Select the Language:</label>
+                <!-- Each option value is the language id used as key in languages.json -->
+                <select id="select-button">
+                    <option value="en" lang="en">English</option>
+                    <option value="ptbr" lang="pt-BR">Português (Brasil)</option>
+                    <option value="ptpt" lang="pt-PT">Português (Portugal)</option>
+                    <option value="es" lang="es">Español</option>
+                    <option value="fr" lang="fr">Français</option>
+                    <option value="de" lang="de">Deutsch</option>
                 </select>
             </p>
             <!--Creating the play agaist AI-->
